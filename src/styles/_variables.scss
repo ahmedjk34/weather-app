@@ -1,0 +1,16 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Open+Sans:wght@400&family=Roboto:wght@300&display=swap");
+
+$background-gradient: linear-gradient(
+  180deg,
+  rgba(0, 0, 40, 1) 0%,
+  rgba(25, 0, 70, 1) 60%,
+  rgba(50, 0, 90, 1) 100%
+);
+
+$primary-color: #4a90e2;
+$text-color: #ffffff;
+$hover-color: #357abd;
+
+$title-font: "Montserrat", sans-serif; // For titles and headings
+$primary-font: "Open Sans", sans-serif; // For body text and primary content
+$secondary-font: "Roboto", sans-serif; // For data, numbers, and other secondary elements
