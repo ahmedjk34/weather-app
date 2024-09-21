@@ -1,7 +1,12 @@
+@use "./variables" as v;
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+}
+body {
+  height: 100dvh;
+  background: v.$background-gradient;
 }
