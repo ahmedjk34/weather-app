@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/global-rules.scss";
+import Nav from "@/components/Nav/Nav";
 
 export default function RootLayout({
   children,
@@ -8,7 +9,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }
