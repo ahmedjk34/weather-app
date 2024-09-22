@@ -30,3 +30,8 @@ export interface WeatherData {
   cloudless: number;
   pressure: number; // In hPa
 }
+
+export interface Location {
+  settlement: string;
+  country: string;
+}
