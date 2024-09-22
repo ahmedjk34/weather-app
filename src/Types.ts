@@ -1,8 +1,8 @@
 export interface CityData {
   name: string;
   country: String;
-  sunrise: String;
-  sunset: String;
+  sunrise: number;
+  sunset: number;
 }
 
 export interface WeatherData {
