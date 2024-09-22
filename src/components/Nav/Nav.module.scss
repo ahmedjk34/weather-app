@@ -43,7 +43,7 @@ $translateValue: -5%;
       transform: translate(0, -50%);
       right: 1rem;
     }
-    &:focus-visible,
+    &:focus-within,
     &:hover {
       transform: translateY($translateValue);
       cursor: pointer;
