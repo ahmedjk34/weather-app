@@ -12,7 +12,7 @@ function Nav({}: Props) {
     <div className={styles.nav}>
       <Image src={"/logo.png"} alt="logo" width={160} height={80}></Image>
       <div className={styles.inputHolder}>
-        <input type="text" name="search"></input>
+        <input type="text" name="search" autoComplete="off"></input>
         <FaSearch className={styles.icon} />
       </div>
       <div>
