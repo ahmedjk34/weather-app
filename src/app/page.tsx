@@ -1,7 +1,7 @@
 "use server";
 
 import { extractWeatherData } from "@/lib/util";
-
+import { formatSunriseSunset } from "./clientUtill";
 export default async function Home({
   searchParams,
 }: {
@@ -13,5 +13,12 @@ export default async function Home({
     );
   }
   const data = await extractWeatherData(searchParams.city, searchParams.units);
+  if (!data.cityData || !data.weatherData) throw new Error("City not found");
+
+  const { sunset, sunrise } = formatSunriseSunset(
+    data.cityData.sunrise,
+    data.cityData.sunset
+  );
+
   return <div></div>;
 }
