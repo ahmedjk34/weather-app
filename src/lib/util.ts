@@ -1,33 +1,11 @@
 "use server";
-import { WeatherData, Location } from "@/Types";
+import { CityData, WeatherData } from "@/Types";
 import moment from "moment";
 
-export async function extractLocations(query: string): Promise<Location[]> {
-  try {
-    const apiResponse = await fetch(
-      `http://api.geonames.org/searchJSON?name_startsWith=${query}&maxRows=3&username=${process.env.GEO_NAMES_USERNAME}`
-    );
-    if (!apiResponse.ok)
-      throw new Error(`Error, response status : ${apiResponse.status} `);
-
-    const apiData = await apiResponse.json();
-
-    const locations: Location[] = [];
-    apiData.geonames.forEach((location: any) => {
-      locations.push({
-        settlement: location.name,
-        country: location.countryName,
-      });
-    });
-
-    return locations;
-  } catch (error) {
-    console.error("Error extracting location data:", error);
-    return [];
-  }
-}
-
-export async function extractWeatherData(): Promise<WeatherData[]> {
+export async function extractWeatherData(): Promise<{
+  cityData: CityData | null;
+  weatherData: WeatherData[] | null;
+}> {
   try {
     //This is temporary, we need to hide the API key and add the ability to query a city
     const apiResponse = await fetch(
@@ -35,42 +13,37 @@ export async function extractWeatherData(): Promise<WeatherData[]> {
     );
 
     const apiData = await apiResponse.json();
-    const extractedData: WeatherData[] = [];
 
-    apiData.list.forEach((day: any) => {
-      const windDirection = windDegreeToDirection(day.wind.deg);
-      const windDescription = windSpeedToDescription(day.wind.speed);
-      const rainPercentage = rainAmountToChance(day?.rain?.["3h"] ?? 0);
-      const formattedDate = moment
-        .unix(day.dt)
-        .format("dddd D MMMM YYYY | H:mm");
+    const cityData: CityData = {
+      name: apiData.city.name,
+      country: apiData.city.country,
+      sunrise: apiData.city.sunrise,
+      sunset: apiData.city.sunset,
+    };
 
-      const currentDay: WeatherData = {
-        date: formattedDate,
-        temperature: day.main.temp,
-        feelsLike: day.main.feels_like,
-        weather: {
-          main: day.weather[0].main,
-          description: day.weather[0].description,
-        },
-        wind: {
-          speed: day.wind.speed,
-          direction: windDirection,
-        },
-        humidity: day.main.humidity,
-        rainPercentage: rainPercentage,
-        windDescription: windDescription,
-        cloudless: day.clouds.all,
-        pressure: day.main.pressure,
-      };
+    const weatherData: WeatherData[] = apiData.list.map((day: any) => ({
+      date: moment.unix(day.dt).format("dddd D MMMM YYYY | H:mm"),
+      temperature: day.main.temp,
+      feelsLike: day.main.feels_like,
+      weather: {
+        main: day.weather[0].main,
+        description: day.weather[0].description,
+      },
+      wind: {
+        speed: day.wind.speed,
+        direction: windDegreeToDirection(day.wind.deg),
+      },
+      humidity: day.main.humidity,
+      rainPercentage: rainAmountToChance(day?.rain?.["3h"] ?? 0),
+      windDescription: windSpeedToDescription(day.wind.speed),
+      cloudless: day.clouds.all,
+      pressure: day.main.pressure,
+    }));
 
-      extractedData.push(currentDay);
-    });
-
-    return extractedData;
+    return { cityData, weatherData };
   } catch (error) {
     console.error("Error extracting weather data:", error);
-    return [];
+    return { cityData: null, weatherData: null };
   }
 }
 
