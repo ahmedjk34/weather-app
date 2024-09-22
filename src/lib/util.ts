@@ -2,7 +2,10 @@
 import { CityData, WeatherData } from "@/Types";
 import moment from "moment";
 
-export async function extractWeatherData(): Promise<{
+export async function extractWeatherData(
+  city: string,
+  units: string
+): Promise<{
   cityData: CityData | null;
   weatherData: WeatherData[] | null;
 }> {
