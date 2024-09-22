@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { useCallback, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { Location } from "@/Types";
+import SearchPopUp from "./SearchPopUp";
 
 type Props = {};
 
@@ -23,7 +24,7 @@ function Nav({}: Props) {
       }
       const locations = await extractLocations(query);
       setExtractedLocations(locations);
-    }, 500),
+    }, 350),
     []
   );
 
@@ -51,6 +52,7 @@ function Nav({}: Props) {
           onChange={(e) => handleInputChange(e)}
         ></input>
         <FaSearch className={styles.icon} />
+        <SearchPopUp locations={extractedLocations} />
       </div>
       <div>
         <div className={styles.buttonHolder}>
