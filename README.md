@@ -8,7 +8,7 @@ A weather application where users can search for and view real-time weather data
 - **OpenWeatherAPI** for fetching real-time weather data, forecasts, and additional weather-related information.
 - **Google Places API** for providing autocomplete suggestions for city names as users type.
 - **Axios** for making API requests and handling responses.
-- **Geolocation API** to fetch the user's current location for localized weather data.
+- **GeoNames API** to fetch the user's current location for localized weather data.
 - **Moment.js** for formatting date and time data.
 
 ## Features
