@@ -8,7 +8,8 @@ export async function extractWeatherData(): Promise<WeatherData[]> {
       "https://api.openweathermap.org/data/2.5/forecast?q=London&appid=e28d24812e288f4afbafe94df2f7631c&units=metric"
     );
 
-    if (!apiResponse.ok) throw new Error("Error Found");
+    if (!apiResponse.ok)
+      throw new Error(`Error, response status : ${apiResponse.status} `);
 
     const apiData = await apiResponse.json();
     const extractedData: WeatherData[] = [];
