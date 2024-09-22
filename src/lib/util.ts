@@ -1,5 +1,31 @@
-import { WeatherData } from "@/Types";
+"use server";
+import { WeatherData, Location } from "@/Types";
 import moment from "moment";
+
+export async function extractLocations(query: string): Promise<Location[]> {
+  try {
+    const apiResponse = await fetch(
+      `http://api.geonames.org/searchJSON?name_startsWith=${query}&maxRows=3&username=${process.env.GEO_NAMES_USERNAME}`
+    );
+    if (!apiResponse.ok)
+      throw new Error(`Error, response status : ${apiResponse.status} `);
+
+    const apiData = await apiResponse.json();
+
+    const locations: Location[] = [];
+    apiData.geonames.forEach((location: any) => {
+      locations.push({
+        settlement: location.name,
+        country: location.countryName,
+      });
+    });
+
+    return locations;
+  } catch (error) {
+    console.error("Error extracting location data:", error);
+    return [];
+  }
+}
 
 export async function extractWeatherData(): Promise<WeatherData[]> {
   try {
@@ -7,9 +33,6 @@ export async function extractWeatherData(): Promise<WeatherData[]> {
     const apiResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=London&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`
     );
-
-    if (!apiResponse.ok)
-      throw new Error(`Error, response status : ${apiResponse.status} `);
 
     const apiData = await apiResponse.json();
     const extractedData: WeatherData[] = [];
