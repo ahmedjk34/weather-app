@@ -12,9 +12,11 @@ export async function extractWeatherData(
   try {
     //This is temporary, we need to hide the API key and add the ability to query a city
     const apiResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=London&appid=${process.env.OPEN_WEATHER_API_KEY}&units=metric`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=${units}`
     );
 
+    if (!apiResponse.ok)
+      throw new Error(`Error status : ${apiResponse.status}`);
     const apiData = await apiResponse.json();
 
     const cityData: CityData = {
