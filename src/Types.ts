@@ -1,3 +1,10 @@
+export interface CityData {
+  name: string;
+  country: String;
+  sunrise: String;
+  sunset: String;
+}
+
 export interface WeatherData {
   date: String;
   temperature: number;
@@ -29,9 +36,4 @@ export interface WeatherData {
     | "Storm"; // Description of wind/weather (to be calculated)
   cloudless: number;
   pressure: number; // In hPa
-}
-
-export interface Location {
-  settlement: string;
-  country: string;
 }
