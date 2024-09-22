@@ -43,6 +43,25 @@ $translateValue: -5%;
       transform: translate(0, -50%);
       right: 1rem;
     }
+    .searchPopup {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      top: 4rem;
+      padding: 1rem;
+      background-color: v.$primary-color;
+      color: white;
+      font-family: v.$primary-font;
+      width: 100%;
+      border-radius: 2rem;
+      h3 {
+        transition: background-color 0.25s ease-in-out;
+        &:hover {
+          background-color: v.$hover-color;
+        }
+      }
+    }
     &:focus-within,
     &:hover {
       transform: translateY($translateValue);
