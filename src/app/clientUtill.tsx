@@ -14,23 +14,13 @@ import {
 import {
   FaSun,
   FaCloudSun,
-  FaCloud,
   FaCloudSunRain,
   FaCloudShowersHeavy,
   FaCloudBolt,
   FaRegSnowflake,
+  FaQuestion,
 } from "react-icons/fa6";
 import { RiMistFill } from "react-icons/ri";
-
-export function formatSunriseSunset(sunrise: number, sunset: number) {
-  const formattedSunrise = moment.unix(sunrise).format("H:mm");
-  const formattedSunset = moment.unix(sunset).format("H:mm");
-
-  return {
-    sunrise: formattedSunrise,
-    sunset: formattedSunset,
-  };
-}
 
 export function extractSuitableArrow(direction: string) {
   switch (direction) {
@@ -56,26 +46,23 @@ export function extractSuitableArrow(direction: string) {
 }
 
 export function extractWeatherIcon(condition: string) {
+  console.log(condition);
   switch (condition) {
-    case "clear sky":
+    case "Clear":
       return <FaSun />;
-    case "few clouds":
+    case "Clouds":
       return <FaCloudSun />;
-    case "scattered clouds":
-      return <FaCloud />;
-    case "broken clouds":
-      return <FaCloud />;
-    case "shower rain":
+    case "Drizzle":
       return <FaCloudSunRain />;
-    case "rain":
+    case "Rain":
       return <FaCloudShowersHeavy />;
-    case "thunderstorm":
+    case "Thunderstorm":
       return <FaCloudBolt />;
-    case "mist":
+    case "Mist":
       return <RiMistFill />;
-    case "snow":
+    case "Snow":
       return <FaRegSnowflake />;
     default:
-      return null;
+      return <FaQuestion />;
   }
 }
