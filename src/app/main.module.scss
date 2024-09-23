@@ -1,0 +1,28 @@
+@use "../styles/variables" as v;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100dvh - 240px);
+  .mainComponent {
+    font-family: v.$primary-font;
+    color: white;
+    .generalInformation {
+      text-align: center;
+    }
+    .todayWeatherInformation {
+      display: flex;
+      .mainInformation {
+      }
+      .secondaryInformation {
+      }
+    }
+    .futureWeatherInformation {
+    }
+  }
+}
+
+.secondaryText {
+  opacity: 0.5;
+}
