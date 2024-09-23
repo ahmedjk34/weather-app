@@ -1,8 +1,8 @@
 export interface CityData {
   name: string;
   country: String;
-  sunrise: number;
-  sunset: number;
+  sunrise: string;
+  sunset: string;
 }
 
 export interface WeatherData {
@@ -11,15 +11,14 @@ export interface WeatherData {
   feelsLike: number;
   weather: {
     main:
-      | "clear sky"
-      | "few clouds"
-      | "scattered clouds"
-      | "broken clouds"
-      | "shower rain"
-      | "rain"
-      | "thunderstorm"
-      | "mist"
-      | "snow";
+      | "Clouds"
+      | "Clear"
+      | "Drizzle"
+      | "Rain"
+      | "Thunderstorm"
+      | "Snow"
+      | "Mist"
+      | "Haze"; // Main weather condition
     description: string; // Weather description (e.g., "light rain", "few clouds", "clear sky")
   };
   wind: {
