@@ -11,6 +11,17 @@ import {
   FiArrowDownRight,
 } from "react-icons/fi";
 
+import {
+  FaSun,
+  FaCloudSun,
+  FaCloud,
+  FaCloudSunRain,
+  FaCloudShowersHeavy,
+  FaCloudBolt,
+  FaRegSnowflake,
+} from "react-icons/fa6";
+import { RiMistFill } from "react-icons/ri";
+
 export function formatSunriseSunset(sunrise: number, sunset: number) {
   const formattedSunrise = moment.unix(sunrise).format("H:mm");
   const formattedSunset = moment.unix(sunset).format("H:mm");
@@ -40,6 +51,31 @@ export function extractSuitableArrow(direction: string) {
     case "NW":
       return <FiArrowUpLeft />;
     default:
-      return null; // or some default icon if desired
+      return null;
+  }
+}
+
+export function extractWeatherIcon(condition: string) {
+  switch (condition) {
+    case "clear sky":
+      return <FaSun />;
+    case "few clouds":
+      return <FaCloudSun />;
+    case "scattered clouds":
+      return <FaCloud />;
+    case "broken clouds":
+      return <FaCloud />;
+    case "shower rain":
+      return <FaCloudSunRain />;
+    case "rain":
+      return <FaCloudShowersHeavy />;
+    case "thunderstorm":
+      return <FaCloudBolt />;
+    case "mist":
+      return <RiMistFill />;
+    case "snow":
+      return <FaRegSnowflake />;
+    default:
+      return null;
   }
 }
