@@ -10,7 +10,6 @@ export async function extractWeatherData(
   weatherData: WeatherData[] | null;
 }> {
   try {
-    //This is temporary, we need to hide the API key and add the ability to query a city
     const apiResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=${units}`
     );
