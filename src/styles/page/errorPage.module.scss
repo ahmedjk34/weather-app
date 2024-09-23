@@ -1,0 +1,13 @@
+@use "../../styles/variables" as v;
+
+.errorPage {
+  height: calc(100dvh - 240px);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  font-family: v.$title-font;
+  gap: 1rem;
+}
