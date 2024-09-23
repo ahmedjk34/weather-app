@@ -86,12 +86,12 @@ type SecondaryInfoProps = {
 function CreateSecondaryInfo({ title, info, unit, icon }: SecondaryInfoProps) {
   return (
     <div>
-      <h5 className={styles.secondaryText}>{title}</h5>
-      <h4>
+      <h4 className={styles.secondaryText}>{title}</h4>
+      <h3>
         {icon}
         {info}
         {unit}
-      </h4>
+      </h3>
     </div>
   );
 }
