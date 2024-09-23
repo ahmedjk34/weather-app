@@ -11,14 +11,15 @@ export interface WeatherData {
   feelsLike: number;
   weather: {
     main:
-      | "Clouds"
-      | "Clear"
-      | "Rain"
-      | "Snow"
-      | "Drizzle"
-      | "Thunderstorm"
-      | "Mist"
-      | "Haze"; // Main weather condition
+      | "clear sky"
+      | "few clouds"
+      | "scattered clouds"
+      | "broken clouds"
+      | "shower rain"
+      | "rain"
+      | "thunderstorm"
+      | "mist"
+      | "snow";
     description: string; // Weather description (e.g., "light rain", "few clouds", "clear sky")
   };
   wind: {
