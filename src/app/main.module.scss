@@ -16,6 +16,8 @@
       .mainInformation {
       }
       .secondaryInformation {
+        display: grid;
+        grid-template: 1fr 1fr / 1fr 1fr 1fr;
       }
     }
     .futureWeatherInformation {

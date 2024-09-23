@@ -1,9 +1,10 @@
 "use server";
 
 import { extractWeatherData } from "@/lib/util";
-import { formatSunriseSunset } from "./clientUtill";
+import { extractSuitableArrow, extractWeatherIcon } from "./clientUtill";
 import { notFound } from "next/navigation";
 import styles from "./main.module.scss";
+import { ReactNode } from "react";
 export default async function Home({
   searchParams,
 }: {
@@ -15,10 +16,6 @@ export default async function Home({
   const data = await extractWeatherData(searchParams.city, searchParams.units);
   if (!data.cityData || !data.weatherData) notFound();
 
-  const { sunset, sunrise } = formatSunriseSunset(
-    data.cityData.sunrise,
-    data.cityData.sunset
-  );
   const todaysWeather = data.weatherData[0];
 
   return (
@@ -32,7 +29,10 @@ export default async function Home({
         </div>
         <div className={styles.todayWeatherInformation}>
           <div className={styles.mainInformation}>
-            <h1>{todaysWeather.temperature}°</h1>
+            <h1>
+              {extractWeatherIcon(todaysWeather.weather.main)}
+              {todaysWeather.temperature}°
+            </h1>
             <h3>{todaysWeather.weather.description}</h3>
             <h4 className={styles.secondaryText}>
               Feels like {todaysWeather.feelsLike}°
@@ -41,10 +41,57 @@ export default async function Home({
               {todaysWeather.windDescription}
             </h4>
           </div>
-          <div className={styles.secondaryInformation}></div>
+          <div className={styles.secondaryInformation}>
+            <CreateSecondaryInfo
+              title={"Wind"}
+              info={todaysWeather.wind.speed}
+              unit="km/h"
+              icon={extractSuitableArrow(todaysWeather.wind.direction)}
+            />
+            <CreateSecondaryInfo
+              title={"Cloudiness"}
+              info={todaysWeather.cloudless}
+              unit={"%"}
+            />
+            <CreateSecondaryInfo
+              title={"Chance of Rain"}
+              info={todaysWeather.rainPercentage}
+              unit={"%"}
+            />
+            <CreateSecondaryInfo
+              title={"Sunrise"}
+              info={data.cityData.sunrise}
+            />
+            <CreateSecondaryInfo title={"Sunset"} info={data.cityData.sunset} />
+            <CreateSecondaryInfo
+              title={"Humidity"}
+              info={todaysWeather.humidity}
+              unit={"%"}
+            />
+          </div>
         </div>
         <div className={styles.futureWeatherInformation}></div>
       </div>
+    </div>
+  );
+}
+
+type SecondaryInfoProps = {
+  title: string;
+  info: string | number;
+  unit?: string;
+  icon?: ReactNode | null;
+};
+
+function CreateSecondaryInfo({ title, info, unit, icon }: SecondaryInfoProps) {
+  return (
+    <div>
+      <h5 className={styles.secondaryText}>{title}</h5>
+      <h4>
+        {icon}
+        {info}
+        {unit}
+      </h4>
     </div>
   );
 }
