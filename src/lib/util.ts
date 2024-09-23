@@ -16,13 +16,19 @@ export async function extractWeatherData(
 
     if (!apiResponse.ok)
       throw new Error(`Error status : ${apiResponse.status}`);
+
     const apiData = await apiResponse.json();
+
+    const { sunset, sunrise } = formatSunriseSunset(
+      apiData.city.sunrise,
+      apiData.city.sunset
+    );
 
     const cityData: CityData = {
       name: apiData.city.name,
       country: apiData.city.country,
-      sunrise: apiData.city.sunrise,
-      sunset: apiData.city.sunset,
+      sunrise,
+      sunset,
     };
 
     const weatherData: WeatherData[] = apiData.list.map((day: any) => ({
@@ -112,4 +118,14 @@ function rainAmountToChance(rainInMm: number): number {
   } else {
     return 100; // Considered very heavy rain as 100% chance
   }
+}
+
+function formatSunriseSunset(sunrise: number, sunset: number) {
+  const formattedSunrise = moment.unix(sunrise).format("H:mm");
+  const formattedSunset = moment.unix(sunset).format("H:mm");
+
+  return {
+    sunrise: formattedSunrise,
+    sunset: formattedSunset,
+  };
 }
