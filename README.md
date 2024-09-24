@@ -14,7 +14,7 @@ A weather application where users can search for and view real-time weather data
 
 - **Search Weather by City**: Allows users to enter a city name and get real-time weather data and forecasts, with autocomplete suggestions.
 - **Current Location Weather**: Uses the browser's Geolocation API to fetch and display weather data for the user's current location.
-- **3-Day Forecast**: Displays a 3-day weather forecast including highs, lows, and weather conditions for each day.
+- **Future Forecast**: Displays a 2-to-5 day weather forecast including highs, lows, and weather conditions for each day.
 - **Weather Metrics**: Shows additional data like humidity, wind speed and chance of rain
 - **Unit Conversion**: Allows users to toggle between Celsius and Fahrenheit.
 - **Responsive Design**: Optimized for mobile, tablet, and desktop viewing.
