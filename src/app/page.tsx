@@ -10,13 +10,13 @@ export default async function Home({
 }: {
   searchParams: { city: string | undefined; units: string | undefined };
 }) {
-  if (!searchParams.city || !searchParams.units) {
-    notFound();
-  }
+  if (!searchParams.city || !searchParams.units)
+    throw new Error("City & Units parameters can't be empty");
   const data = await extractWeatherData(searchParams.city, searchParams.units);
   if (!data.cityData || !data.weatherData) notFound();
 
   const todaysWeather = data.weatherData[0];
+  const futureWeatherConditions = data.weatherData.slice(1); // Get the next 4 days
 
   return (
     <div className={styles.wrapper}>
@@ -70,7 +70,19 @@ export default async function Home({
             />
           </div>
         </div>
-        <div className={styles.futureWeatherInformation}></div>
+      </div>
+      <div className={styles.futureWeatherInformation}>
+        {futureWeatherConditions.map((dayWeather, index) => (
+          <CreateFutureWeatherInformation
+            key={index}
+            day={dayWeather.date}
+            temperature={dayWeather.temperature}
+            feelsLike={dayWeather.feelsLike}
+            weatherMain={dayWeather.weather.main}
+            windSpeed={dayWeather.wind.speed}
+            windDirection={dayWeather.wind.direction}
+          />
+        ))}
       </div>
     </div>
   );
@@ -92,6 +104,40 @@ function CreateSecondaryInfo({ title, info, unit, icon }: SecondaryInfoProps) {
         {info}
         {unit}
       </h3>
+    </div>
+  );
+}
+
+type FutureWeatherInformationProps = {
+  day: string;
+  temperature: number;
+  feelsLike: number;
+  weatherMain: string;
+  windSpeed: number;
+  windDirection: string;
+};
+
+function CreateFutureWeatherInformation({
+  day,
+  temperature,
+  feelsLike,
+  weatherMain,
+  windSpeed,
+  windDirection,
+}: FutureWeatherInformationProps) {
+  return (
+    <div className={styles.futureWeatherCard}>
+      <h4>{day}</h4>
+      <div>
+        <h3>
+          {extractWeatherIcon(weatherMain)}
+          {temperature}°
+        </h3>
+        <h4>Feels like: {feelsLike}°</h4>
+        <h4>
+          Wind: {windSpeed} km/h {extractSuitableArrow(windDirection)}
+        </h4>
+      </div>
     </div>
   );
 }
