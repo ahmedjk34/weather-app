@@ -6,7 +6,7 @@ export interface CityData {
 }
 
 export interface WeatherData {
-  date: String;
+  date: string;
   temperature: number;
   feelsLike: number;
   weather: {
