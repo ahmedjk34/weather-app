@@ -6,7 +6,6 @@ A weather application where users can search for and view real-time weather data
 
 - **NextJS** for creating dynamic, responsive user interfaces.
 - **OpenWeatherAPI** for fetching real-time weather data, forecasts, and additional weather-related information.
-- **Google Places API** for providing autocomplete suggestions for city names as users type.
 - **Axios** for making API requests and handling responses.
 - **GeoNames API** to fetch the user's current location for localized weather data.
 - **Moment.js** for formatting date and time data.
@@ -15,7 +14,7 @@ A weather application where users can search for and view real-time weather data
 
 - **Search Weather by City**: Allows users to enter a city name and get real-time weather data and forecasts, with autocomplete suggestions.
 - **Current Location Weather**: Uses the browser's Geolocation API to fetch and display weather data for the user's current location.
-- **5-Day Forecast**: Displays a 5-day weather forecast including highs, lows, and weather conditions for each day.
-- **Weather Metrics**: Shows additional data like humidity, wind speed, UV index, and pressure.
+- **3-Day Forecast**: Displays a 3-day weather forecast including highs, lows, and weather conditions for each day.
+- **Weather Metrics**: Shows additional data like humidity, wind speed and chance of rain
 - **Unit Conversion**: Allows users to toggle between Celsius and Fahrenheit.
 - **Responsive Design**: Optimized for mobile, tablet, and desktop viewing.
