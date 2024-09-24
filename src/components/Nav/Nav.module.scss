@@ -92,3 +92,11 @@ $translateValue: -5%;
     }
   }
 }
+
+@media (max-width: 800px) {
+  .nav {
+    flex-direction: column;
+    gap: 1.25rem;
+    height: auto;
+  }
+}

@@ -57,13 +57,23 @@
   }
   .futureWeatherInformation {
     color: white;
-    display: grid;
-    grid-template: 1fr 1fr / 1fr 1fr 1fr 1fr;
-    grid-auto-rows: 1fr;
-    place-items: center;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
     font-family: v.$primary-font;
+    & > div {
+      display: grid;
+      grid-template: 1fr / 1fr 1fr 1fr 1fr;
+      grid-auto-rows: 1fr;
+      place-items: center;
+      border-bottom: 1px solid gray;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+    & > div:last-child {
+      border-bottom: none;
+    }
     h2 {
-      grid-column: 1/5;
       margin: 1rem;
       opacity: 0.6;
       font-family: v.$title-font;
@@ -80,4 +90,25 @@
 
 .secondaryText {
   opacity: 0.6;
+}
+
+@media (max-width: 800px) {
+  .wrapper {
+    padding: 1.25rem 0;
+    .mainComponent {
+      .todayWeatherInformation {
+        flex-direction: column;
+        .mainInformation {
+          border-right: none;
+          border-bottom: 1px solid white;
+        }
+      }
+    }
+    .futureWeatherInformation {
+      & > div {
+        grid-template: 1fr 1fr/ 1fr 1fr;
+        grid-auto-rows: 1fr;
+      }
+    }
+  }
 }

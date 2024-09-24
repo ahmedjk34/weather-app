@@ -22,3 +22,12 @@
     text-decoration: inherit;
   }
 }
+
+@media (max-width: 900px) {
+  .footer {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem 0;
+    gap: 1.25rem;
+  }
+}

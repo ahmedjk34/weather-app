@@ -128,7 +128,7 @@ function CreateFutureWeatherInformation({
   windDirection,
 }: FutureWeatherInformationProps) {
   return (
-    <>
+    <div>
       <h3>{day.split(" ")[0]}</h3>
       <h3>
         {extractWeatherIcon(weatherMain)}
@@ -139,6 +139,6 @@ function CreateFutureWeatherInformation({
         {extractSuitableArrow(windDirection)}
         {windSpeed}
       </h3>
-    </>
+    </div>
   );
 }
