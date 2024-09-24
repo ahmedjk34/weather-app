@@ -127,17 +127,16 @@ function CreateFutureWeatherInformation({
 }: FutureWeatherInformationProps) {
   return (
     <div className={styles.futureWeatherCard}>
-      <h4>{day}</h4>
-      <div>
-        <h3>
-          {extractWeatherIcon(weatherMain)}
-          {temperature}°
-        </h3>
-        <h4>Feels like: {feelsLike}°</h4>
-        <h4>
-          Wind: {windSpeed} km/h {extractSuitableArrow(windDirection)}
-        </h4>
-      </div>
+      <h3>{day}</h3>
+      <h3>
+        {extractWeatherIcon(weatherMain)}
+        {temperature}°
+      </h3>
+      <h3>Feels like: {feelsLike}°</h3>
+      <h3>
+        Wind: {extractSuitableArrow(windDirection)}
+        {windSpeed}
+      </h3>
     </div>
   );
 }

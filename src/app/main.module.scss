@@ -4,13 +4,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 1rem;
   height: calc(100dvh - 240px);
   .mainComponent {
+    display: flex;
+    flex-direction: column;
     font-family: v.$primary-font;
     color: white;
     padding: 1rem;
     border: 1px solid white;
-    display: flex;
     gap: 1rem;
     .generalInformation {
       text-align: center;
@@ -24,6 +27,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
         gap: 0.25rem;
         border-right: 1px solid white;
         padding: 1rem;
@@ -50,7 +54,15 @@
         }
       }
     }
-    .futureWeatherInformation {
+  }
+  .futureWeatherInformation {
+    color: white;
+    & > div {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      justify-content: space-between;
+      font-family: v.$primary-font;
     }
   }
 }
