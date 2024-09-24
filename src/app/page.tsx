@@ -72,6 +72,7 @@ export default async function Home({
         </div>
       </div>
       <div className={styles.futureWeatherInformation}>
+        <h2>Future forecast</h2>
         {futureWeatherConditions.map((dayWeather, index) => (
           <CreateFutureWeatherInformation
             key={index}
