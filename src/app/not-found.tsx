@@ -3,17 +3,7 @@ import { useEffect, useState } from "react";
 import styles from "../styles/page/errorPage.module.scss";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
-  useEffect(() => {
-    console.error(error);
-  }, [error]);
-
+export default function NotFound() {
   const [countDown, setCountDown] = useState(3);
   const router = useRouter();
   const pathname = usePathname();
@@ -32,7 +22,7 @@ export default function Error({
 
   return (
     <div className={styles.errorPage}>
-      <h1>Something went wrong!</h1>
+      <h1>This page was not found!</h1>
       <p>You will be redirected to a random city in {countDown} seconds...</p>
     </div>
   );
