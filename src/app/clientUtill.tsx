@@ -46,7 +46,6 @@ export function extractSuitableArrow(direction: string) {
 }
 
 export function extractWeatherIcon(condition: string) {
-  console.log(condition);
   switch (condition) {
     case "Clear":
       return <FaSun />;
