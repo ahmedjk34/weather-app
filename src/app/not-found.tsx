@@ -7,13 +7,16 @@ export default function NotFound() {
   const [countDown, setCountDown] = useState(3);
   const router = useRouter();
   const pathname = usePathname();
+  const cities = ["London", "New York", "Tokyo", "Paris", "Berlin", "Sydney"];
+  const randomCity = cities[Math.floor(Math.random() * cities.length)];
+
   useEffect(() => {
     if (countDown > 0) {
       const timer = setTimeout(() => setCountDown(countDown - 1), 1000);
       return () => clearTimeout(timer); // Clean up the timer
     } else {
       const searchParams = new URLSearchParams();
-      searchParams.set("city", "London");
+      searchParams.set("city", randomCity);
       searchParams.set("units", "metric");
       router.push(pathname + "?" + searchParams.toString());
       window.location.href = pathname + "?" + searchParams.toString(); // Force a full page reload

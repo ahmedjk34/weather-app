@@ -1,7 +1,7 @@
 @use "../../styles/variables" as v;
 
 .errorPage {
-  height: calc(100dvh - 240px);
+  height: calc(100dvh - 180px); //100dvh - (footer + nav) heights
   width: 100%;
   display: flex;
   justify-content: center;
