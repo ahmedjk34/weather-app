@@ -1,6 +1,6 @@
 ## Basic Idea
 
-A weather application where users can search for and view real-time weather data, including temperature, humidity, wind speed, and forecasts. The app will allow users to input a city name or use their current location to get weather details. Data will be fetched from the OpenWeatherAPI, providing accurate and up-to-date weather conditions, forecasts, and additional metrics like UV index, air quality, and weather maps. The app will also feature an autocomplete function that suggests city names using the Google Places API as the user types.
+A weather application where users can search for and view real-time weather data, including temperature, humidity, wind speed, and forecasts. The app will allow users to input a city name or use their current location to get weather details. Data will be fetched from the OpenWeatherAPI, providing accurate and up-to-date weather conditions, forecasts, and additional metrics like chance of rain and humidity. 
 
 ## Tech Used
 
