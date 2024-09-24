@@ -32,6 +32,7 @@ export default async function Home({
             <h1>
               {extractWeatherIcon(todaysWeather.weather.main)}
               {todaysWeather.temperature}°
+              {searchParams.units == "metric" ? "C" : "F"}
             </h1>
             <h3>{todaysWeather.weather.description}</h3>
             <h4 className={styles.secondaryText}>
@@ -45,7 +46,7 @@ export default async function Home({
             <CreateSecondaryInfo
               title={"Wind"}
               info={todaysWeather.wind.speed}
-              unit="km/h"
+              unit={searchParams.units == "metric" ? "km/h" : "mph"}
               icon={extractSuitableArrow(todaysWeather.wind.direction)}
             />
             <CreateSecondaryInfo
