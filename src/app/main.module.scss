@@ -6,7 +6,7 @@
   align-items: center;
   flex-direction: column;
   gap: 1rem;
-  height: calc(100dvh - 240px);
+  height: calc(100dvh - 180px); //100dvh - (footer + nav) heights
   .mainComponent {
     display: flex;
     flex-direction: column;
