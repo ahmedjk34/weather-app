@@ -1,8 +1,8 @@
 "use client";
 
-import styles from "./Nav.module.scss";
+import styles from "./nav.module.scss";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
