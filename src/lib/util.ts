@@ -31,24 +31,59 @@ export async function extractWeatherData(
       sunset,
     };
 
-    const weatherData: WeatherData[] = apiData.list.map((day: any) => ({
-      date: moment.unix(day.dt).format("dddd D MMMM YYYY | H:mm"),
-      temperature: day.main.temp,
-      feelsLike: day.main.feels_like,
-      weather: {
-        main: day.weather[0].main,
-        description: day.weather[0].description,
-      },
-      wind: {
-        speed: day.wind.speed,
-        direction: windDegreeToDirection(day.wind.deg),
-      },
-      humidity: day.main.humidity,
-      rainPercentage: rainAmountToChance(day?.rain?.["3h"] ?? 0),
-      windDescription: windSpeedToDescription(day.wind.speed),
-      cloudless: day.clouds.all,
-      pressure: day.main.pressure,
-    }));
+    // Get the current time
+    const currentMoment = moment();
+
+    // Calculate the hour difference between now and forecast times to find the closest one
+    const closestForecastEntry = apiData.list.reduce(
+      (closest: any, entry: any) => {
+        const entryMoment = moment.unix(entry.dt);
+        const closestMoment = moment.unix(closest.dt);
+
+        // Calculate the absolute difference between now and both forecast times
+        const diffCurrent = Math.abs(currentMoment.diff(entryMoment));
+        const diffClosest = Math.abs(currentMoment.diff(closestMoment));
+
+        // Return the entry with the smaller time difference
+        return diffCurrent < diffClosest ? entry : closest;
+      }
+    );
+
+    // Get the forecast hour that is closest to the current hour
+    const closestHour = moment.unix(closestForecastEntry.dt).format("H:00:00");
+
+    // Get the current date and ensure the forecast starts from today
+    const today = moment().startOf("day");
+    const endDate = today.clone().add(5, "days"); // Five days from today
+
+    // Filter the forecast data to only include entries between today and the end date
+    const weatherData: WeatherData[] = apiData.list
+      .filter((entry: any) => {
+        const entryDate = moment.unix(entry.dt).startOf("day");
+        return (
+          entryDate.isSameOrAfter(today) &&
+          entryDate.isBefore(endDate) &&
+          moment.unix(entry.dt).format("H:00:00") === closestHour
+        );
+      })
+      .map((day: any) => ({
+        date: moment.unix(day.dt).format("dddd D MMMM YYYY"),
+        temperature: day.main.temp,
+        feelsLike: day.main.feels_like,
+        weather: {
+          main: day.weather[0].main,
+          description: day.weather[0].description,
+        },
+        wind: {
+          speed: day.wind.speed,
+          direction: windDegreeToDirection(day.wind.deg),
+        },
+        humidity: day.main.humidity,
+        rainPercentage: rainAmountToChance(day?.rain?.["3h"] ?? 0),
+        windDescription: windSpeedToDescription(day.wind.speed),
+        cloudless: day.clouds.all,
+        pressure: day.main.pressure,
+      }));
 
     return { cityData, weatherData };
   } catch (error) {
