@@ -2,16 +2,18 @@
 import { CityData, WeatherData } from "@/Types";
 import moment from "moment";
 
+type Units = "metric" | "imperial";
+
 export async function extractWeatherData(
   city: string,
-  units: string
+  units: Units
 ): Promise<{
   cityData: CityData | null;
   weatherData: WeatherData[] | null;
 }> {
   try {
     const apiResponse = await fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=${units}`
+      `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${process.env.OPEN_WEATHER_API_KEY}&units=imperial`
     );
 
     if (!apiResponse.ok)
@@ -19,77 +21,105 @@ export async function extractWeatherData(
 
     const apiData = await apiResponse.json();
 
-    const { sunset, sunrise } = formatSunriseSunset(
-      apiData.city.sunrise,
-      apiData.city.sunset
+    const cityData = formatCityData(apiData.city);
+    const closestHour = getClosestHour(apiData.list);
+    const weatherData = filterAndConvertWeatherData(
+      apiData.list,
+      closestHour,
+      units
     );
-
-    const cityData: CityData = {
-      name: apiData.city.name,
-      country: apiData.city.country,
-      sunrise,
-      sunset,
-    };
-
-    // Get the current time
-    const currentMoment = moment();
-
-    // Calculate the hour difference between now and forecast times to find the closest one
-    const closestForecastEntry = apiData.list.reduce(
-      (closest: any, entry: any) => {
-        const entryMoment = moment.unix(entry.dt);
-        const closestMoment = moment.unix(closest.dt);
-
-        // Calculate the absolute difference between now and both forecast times
-        const diffCurrent = Math.abs(currentMoment.diff(entryMoment));
-        const diffClosest = Math.abs(currentMoment.diff(closestMoment));
-
-        // Return the entry with the smaller time difference
-        return diffCurrent < diffClosest ? entry : closest;
-      }
-    );
-
-    // Get the forecast hour that is closest to the current hour
-    const closestHour = moment.unix(closestForecastEntry.dt).format("H:00:00");
-
-    // Get the current date and ensure the forecast starts from today
-    const today = moment().startOf("day");
-    const endDate = today.clone().add(5, "days"); // Five days from today
-
-    // Filter the forecast data to only include entries between today and the end date
-    const weatherData: WeatherData[] = apiData.list
-      .filter((entry: any) => {
-        const entryDate = moment.unix(entry.dt).startOf("day");
-        return (
-          entryDate.isSameOrAfter(today) &&
-          entryDate.isBefore(endDate) &&
-          moment.unix(entry.dt).format("H:00:00") === closestHour
-        );
-      })
-      .map((day: any) => ({
-        date: moment.unix(day.dt).format("dddd D MMMM YYYY"),
-        temperature: day.main.temp,
-        feelsLike: day.main.feels_like,
-        weather: {
-          main: day.weather[0].main,
-          description: day.weather[0].description,
-        },
-        wind: {
-          speed: day.wind.speed,
-          direction: windDegreeToDirection(day.wind.deg),
-        },
-        humidity: day.main.humidity,
-        rainPercentage: rainAmountToChance(day?.rain?.["3h"] ?? 0),
-        windDescription: windSpeedToDescription(day.wind.speed),
-        cloudless: day.clouds.all,
-        pressure: day.main.pressure,
-      }));
 
     return { cityData, weatherData };
   } catch (error) {
     console.error("Error extracting weather data:", error);
     return { cityData: null, weatherData: null };
   }
+}
+
+function formatCityData(city: any): CityData {
+  const { sunset, sunrise } = formatSunriseSunset(city.sunrise, city.sunset);
+
+  return {
+    name: city.name,
+    country: city.country,
+    sunrise,
+    sunset,
+  };
+}
+//Since OpenWeather API gives us the data on 3 hour intervals, this chooses the interval closest to current time (relative to local time not actual city time, might fix later however since this is just an API mockup not very necessary)
+function getClosestHour(weatherList: any[]): string {
+  const currentMoment = moment();
+
+  const closestForecastEntry = weatherList.reduce(
+    (closest: any, entry: any) => {
+      const entryMoment = moment.unix(entry.dt);
+      const closestMoment = moment.unix(closest.dt);
+      const diffCurrent = Math.abs(currentMoment.diff(entryMoment));
+      const diffClosest = Math.abs(currentMoment.diff(closestMoment));
+
+      return diffCurrent < diffClosest ? entry : closest;
+    }
+  );
+
+  return moment.unix(closestForecastEntry.dt).format("H:00:00");
+}
+
+function filterAndConvertWeatherData(
+  weatherList: any[],
+  closestHour: string,
+  units: Units
+): WeatherData[] {
+  const today = moment().startOf("day");
+  const endDate = today.clone().add(5, "days");
+
+  return weatherList
+    .filter((entry: any) => {
+      const entryDate = moment.unix(entry.dt).startOf("day");
+      return (
+        entryDate.isSameOrAfter(today) &&
+        entryDate.isBefore(endDate) &&
+        moment.unix(entry.dt).format("H:00:00") === closestHour
+      );
+    })
+    .map((day: any) => convertWeatherData(day, units));
+}
+
+function convertWeatherData(day: any, units: Units): WeatherData {
+  const temperature =
+    units === "metric" ? fahrenheitToCelsius(day.main.temp) : day.main.temp;
+  const feelsLike =
+    units === "metric"
+      ? fahrenheitToCelsius(day.main.feels_like)
+      : day.main.feels_like;
+  const windSpeed =
+    units === "metric" ? milesToKm(day.wind.speed) : day.wind.speed;
+
+  return {
+    date: moment.unix(day.dt).format("dddd D MMMM YYYY"),
+    temperature,
+    feelsLike,
+    weather: {
+      main: day.weather[0].main,
+      description: day.weather[0].description,
+    },
+    wind: {
+      speed: windSpeed,
+      direction: windDegreeToDirection(day.wind.deg),
+    },
+    humidity: day.main.humidity,
+    rainPercentage: rainAmountToChance(day?.rain?.["3h"] ?? 0),
+    windDescription: windSpeedToDescription(windSpeed, units),
+    cloudless: day.clouds.all,
+    pressure: day.main.pressure,
+  };
+}
+
+function fahrenheitToCelsius(fahrenheit: number): number {
+  return parseFloat((((fahrenheit - 32) * 5) / 9).toFixed(1));
+}
+
+function milesToKm(miles: number): number {
+  return parseFloat((miles * 1.60934).toFixed(1));
 }
 
 function windDegreeToDirection(degrees: number): string {
@@ -113,19 +143,26 @@ function windDegreeToDirection(degrees: number): string {
     return "Invalid input";
   }
 }
-function windSpeedToDescription(speed: number) {
-  if (speed < 1) {
-    return "Calm"; // Below 1 km/h
-  } else if (speed >= 1 && speed < 12) {
-    return "Light Wind"; // 1 to 11.9 km/h
-  } else if (speed >= 12 && speed < 24) {
-    return "Breeze"; // 12 to 23.9 km/h
-  } else if (speed >= 24 && speed < 50) {
-    return "Strong Wind"; // 24 to 49.9 km/h
-  } else if (speed >= 50 && speed < 75) {
-    return "Gale"; // 50 to 74.9 km/h
+
+function windSpeedToDescription(speed: number, units: Units) {
+  let adjustedSpeed = speed;
+
+  if (units === "imperial") {
+    adjustedSpeed = milesToKm(speed);
+  }
+
+  if (adjustedSpeed < 1) {
+    return "Calm";
+  } else if (adjustedSpeed >= 1 && adjustedSpeed < 12) {
+    return "Light Wind";
+  } else if (adjustedSpeed >= 12 && adjustedSpeed < 24) {
+    return "Breeze";
+  } else if (adjustedSpeed >= 24 && adjustedSpeed < 50) {
+    return "Strong Wind";
+  } else if (adjustedSpeed >= 50 && adjustedSpeed < 75) {
+    return "Gale";
   } else {
-    return "Storm"; // 75 km/h and above
+    return "Storm";
   }
 }
 
