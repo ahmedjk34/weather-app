@@ -50,6 +50,7 @@ function Nav({}: Props) {
           name="search"
           autoComplete="off"
           onChange={(e) => handleInputChange(e)}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
         ></input>
         <FaSearch className={styles.icon} onClick={handleSearch} />
       </div>
