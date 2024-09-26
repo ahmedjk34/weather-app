@@ -4,6 +4,12 @@ import Nav from "@/components/Nav/Nav";
 import Footer from "@/components/Footer/Footer";
 import { Suspense } from "react";
 
+export const metadata: Metadata = {
+  title: "Forecastly - Accurate Weather Forecasts",
+  description:
+    "Stay prepared with real-time weather updates, forecasts, and alerts for your location.",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
