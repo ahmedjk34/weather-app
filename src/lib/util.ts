@@ -1,8 +1,6 @@
 "use server";
-import { CityData, WeatherData } from "@/Types";
+import { CityData, Units, WeatherData } from "@/Types";
 import moment from "moment";
-
-type Units = "metric" | "imperial";
 
 export async function extractWeatherData(
   city: string,

@@ -5,10 +5,11 @@ import { extractSuitableArrow, extractWeatherIcon } from "./clientUtill";
 import { notFound } from "next/navigation";
 import styles from "./main.module.scss";
 import { ReactNode } from "react";
+import { Units } from "@/Types";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { city: string | undefined; units: string | undefined };
+  searchParams: { city: string | undefined; units: Units | undefined };
 }) {
   if (!searchParams.city || !searchParams.units)
     throw new Error("City & Units parameters can't be empty");

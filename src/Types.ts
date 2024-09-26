@@ -1,3 +1,5 @@
+export type Units = "metric" | "imperial";
+
 export interface CityData {
   name: string;
   country: String;
