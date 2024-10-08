@@ -10,7 +10,7 @@ A weather application where users can search for and view real-time weather data
 
 - **NextJS** for creating dynamic, responsive user interfaces.
 - **OpenWeatherAPI** for fetching real-time weather data, forecasts, and additional weather-related information.
-- **SCSS** for clean, scalable, and modular styling.
+- **SASS** for clean, scalable, and modular styling.
 - **Fetch API** for making API requests and handling responses.
 - **Moment.js** for formatting date and time data.
 
